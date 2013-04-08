@@ -1,0 +1,2 @@
+1. grep -i virus names.dmp  | sort -t\| -k2 -d | less -S
+2. grep -i virus names.dmp  | sort -t\| -k2 -d |  wc -l 
