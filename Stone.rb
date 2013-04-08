@@ -28,42 +28,42 @@ class Stone
 
   def count_island
 
-    @visited = @y.times.map{[false] * @x}
-    @count = 0
-
+    visited = Array.new
+    island = 0
     @map.each_with_index do | row, y |
       row.each_with_index do | e, x |
-        if traversable?(y, x)
-          dfs(y, x)
-          @count+=1
+        if traversable?(y, x, visited)
+          dfs(y, x, visited)
+          island+=1
         end
       end
     end
-    @count
+    island
   end
 
   private
-  def dfs(y, x)
+  def dfs(y, x, visited)
     dxy = [[-1,0], [0, 1], [1, 0], [0, -1]]
-    dxy.each do |e|
-      my = y + e[0]
-      mx = x + e[1]
 
-      if traversable?(my, mx)
-        @visited[my][mx] = true
-        dfs(my, mx)
+    dxy.each do |e|
+      next_y = y + e[0]
+      next_x = x + e[1]
+
+      if traversable?(next_y, next_x, visited)
+        visited << [next_y, next_x]
+        dfs(next_y, next_x, visited)
       end
     end
   end
 
   private
-  def traversable?(y, x)
-    inside?(y, x) && !@visited[y][x] && @map[y][x] == ISLAND
+  def traversable?(y, x, visited)
+    inside?(y, x) && !(visited.include?([y,x])) && @map[y][x] == ISLAND
   end
 
   private
   def inside?(y, x)
-    (0 <= y && y < @y) && (0<= x && x < @x)
+    (0 <= y && y < @y) && (0 <= x && x < @x)
   end
 end
 
